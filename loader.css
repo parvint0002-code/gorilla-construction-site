@@ -1,0 +1,524 @@
+/* =========================================================
+   GORILLA — Loading screen
+   Black + neon white with restrained brass signal.
+   Construction motifs (crane, scaffold, blueprint grid) plus
+   an Azerbaijani şəbəkə ornament behind the logo frame.
+   ========================================================= */
+
+.gorilla-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 100%, rgba(231,181,103,0.08), transparent 60%),
+    radial-gradient(ellipse 60% 60% at 50% 0%,  rgba(46,127,138,0.06), transparent 70%),
+    #050505;
+  color: #FFFFFF;
+  font-family: var(--mono, "Geist Mono", ui-monospace, monospace);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  isolation: isolate;
+  transition: opacity 720ms ease, transform 720ms cubic-bezier(0.7, 0, 0.3, 1), filter 720ms ease;
+}
+.gorilla-loader.is-exiting {
+  opacity: 0;
+  transform: translateY(-3%) scale(1.01);
+  filter: blur(3px);
+  pointer-events: none;
+}
+
+/* ---------- Background fx ---------- */
+.gl__grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px);
+  background-size: 56px 56px, 56px 56px;
+  mask-image: radial-gradient(ellipse at center, #000 30%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 30%, transparent 80%);
+  pointer-events: none;
+}
+.gl__grid--minor {
+  background-image:
+    linear-gradient(rgba(231,181,103,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(231,181,103,0.04) 1px, transparent 1px);
+  background-size: 14px 14px, 14px 14px;
+  opacity: 0.6;
+}
+.gl__scan {
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(
+    180deg,
+    rgba(255,255,255,0.04) 0px,
+    rgba(255,255,255,0.04) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  mix-blend-mode: screen;
+  pointer-events: none;
+  animation: gl-scan 6s linear infinite;
+}
+@keyframes gl-scan {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 120px; }
+}
+.gl__sweep-line {
+  /* Single horizontal scanning beam */
+  position: absolute;
+  left: -10%; right: -10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(231,181,103,0.55), transparent);
+  filter: blur(0.5px);
+  box-shadow: 0 0 14px rgba(231,181,103,0.45);
+  animation: gl-sweep-line 5s cubic-bezier(.7,.0,.2,1) infinite;
+  pointer-events: none;
+}
+@keyframes gl-sweep-line {
+  0%   { top: 8%;  opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { top: 96%; opacity: 0; }
+}
+.gl__vignette {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.85) 100%);
+  pointer-events: none;
+}
+
+/* ---------- Crane silhouette right ---------- */
+.gl__crane {
+  position: absolute;
+  top: 0;
+  right: -120px;
+  width: 60vw;
+  max-width: 720px;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.55;
+  filter: drop-shadow(0 0 12px rgba(255,255,255,0.15));
+  animation: gl-crane-sway 6s ease-in-out infinite;
+  transform-origin: 70% 10%;
+}
+@keyframes gl-crane-sway {
+  0%, 100% { transform: rotate(-0.4deg); }
+  50% { transform: rotate(0.4deg); }
+}
+
+/* ---------- Scaffold silhouette left ---------- */
+.gl__scaffold {
+  position: absolute;
+  top: 0;
+  left: -60px;
+  width: 36vw;
+  max-width: 460px;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.32;
+}
+
+/* ---------- Şəbəkə ornament (Azerbaijani geometric motif) ---------- */
+.gl__shebeke {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(820px, 92vw);
+  height: min(820px, 92vw);
+  pointer-events: none;
+  opacity: 0.18;
+  z-index: 1;
+  animation: gl-shebeke-rot 60s linear infinite;
+}
+@keyframes gl-shebeke-rot {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to   { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* ---------- Top + bottom bars ---------- */
+.gl__topbar, .gl__bottombar {
+  position: absolute;
+  left: 0; right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 32px;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.62);
+  z-index: 5;
+}
+.gl__topbar {
+  top: 0;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  background: linear-gradient(180deg, rgba(0,0,0,0.55), transparent);
+}
+.gl__topbar::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: -1px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(231,181,103,0.35) 50%, transparent);
+}
+.gl__bottombar {
+  bottom: 0;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  background: linear-gradient(0deg, rgba(0,0,0,0.55), transparent);
+}
+.gl__bottombar::before {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; top: -1px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(231,181,103,0.35) 50%, transparent);
+}
+.gl__tag { display: inline-flex; align-items: center; gap: 10px; }
+.gl__tag--center { color: rgba(255,255,255,0.9); letter-spacing: 0.32em; }
+.gl__tag--brand {
+  font-family: "Arial Black", "Helvetica Neue", Impact, sans-serif;
+  letter-spacing: 0.28em;
+  color: var(--paper, #FFFFFF);
+}
+.gl__tag--brand::after {
+  content: "";
+  width: 5px; height: 5px;
+  background: #E7B567;
+  display: inline-block;
+  margin-left: 8px;
+  box-shadow: 0 0 8px rgba(231,181,103,0.7);
+}
+
+.gl__pulse {
+  width: 8px; height: 8px;
+  background: #E7B567;
+  display: inline-block;
+  box-shadow: 0 0 10px rgba(231,181,103,0.95), 0 0 22px rgba(231,181,103,0.55);
+  animation: gl-pulse 1.4s ease-in-out infinite;
+}
+@keyframes gl-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.7); }
+}
+.gl__cursor {
+  color: #E7B567;
+  text-shadow: 0 0 8px rgba(231,181,103,0.75);
+  animation: gl-blink 0.9s steps(2, end) infinite;
+  letter-spacing: 0;
+}
+@keyframes gl-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+/* ---------- Side rails (thin survey marks) ---------- */
+.gl__rail {
+  position: absolute;
+  top: 60px; bottom: 60px;
+  width: 18px;
+  z-index: 4;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--mono, monospace);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: rgba(255,255,255,0.35);
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+.gl__rail--l { left: 10px; }
+.gl__rail--r { right: 10px; transform: rotate(180deg); }
+.gl__rail-tick {
+  width: 8px; height: 1px;
+  background: rgba(231,181,103,0.5);
+  display: block;
+  box-shadow: 0 0 4px rgba(231,181,103,0.4);
+}
+
+/* ---------- Center stack ---------- */
+.gl__stack {
+  position: relative;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  width: min(560px, 86vw);
+  text-align: center;
+}
+
+/* Logo frame with corner brackets + scan sweep */
+.gl__logoframe {
+  position: relative;
+  width: min(420px, 80vw);
+  aspect-ratio: 1078 / 983;
+  padding: 18px;
+  background:
+    radial-gradient(ellipse at center, rgba(231,181,103,0.06), transparent 70%),
+    rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.18);
+  box-shadow:
+    0 0 0 1px rgba(231,181,103,0.06),
+    0 0 60px rgba(0,0,0,0.5) inset;
+}
+.gl__logoframe::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.06) 0 1px, transparent 1px 4px);
+  mix-blend-mode: screen;
+  pointer-events: none;
+  opacity: 0.5;
+}
+.gl__logoframe::after {
+  /* Survey crosshair behind logo */
+  content: "";
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 70%; height: 70%;
+  transform: translate(-50%, -50%);
+  background-image:
+    linear-gradient(0deg,  transparent calc(50% - 0.5px), rgba(231,181,103,0.18) 50%, transparent calc(50% + 0.5px)),
+    linear-gradient(90deg, transparent calc(50% - 0.5px), rgba(231,181,103,0.18) 50%, transparent calc(50% + 0.5px));
+  pointer-events: none;
+  opacity: 0.6;
+  z-index: 0;
+}
+.gl__logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  position: relative;
+  z-index: 1;
+  filter:
+    drop-shadow(0 0 14px rgba(255,255,255,0.30))
+    drop-shadow(0 0 32px rgba(255,255,255,0.18))
+    drop-shadow(0 0 6px rgba(231,181,103,0.18));
+  animation: gl-logo-flicker 5s linear infinite;
+}
+@keyframes gl-logo-flicker {
+  0%, 96%, 100% { opacity: 1; }
+  97% { opacity: 0.6; }
+  97.5% { opacity: 1; }
+  98% { opacity: 0.78; }
+  98.5% { opacity: 1; }
+}
+.gl__sweep {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  background: linear-gradient(180deg,
+    transparent 0%,
+    rgba(231,181,103,0.18) calc(var(--p, 0) * 100% - 4%),
+    rgba(255,255,255,0.55) calc(var(--p, 0) * 100%),
+    rgba(231,181,103,0.18) calc(var(--p, 0) * 100% + 4%),
+    transparent 100%);
+  mix-blend-mode: screen;
+}
+
+/* Corner brackets on logo frame — brass */
+.gl__corner {
+  position: absolute;
+  width: 26px; height: 26px;
+  border: 1.5px solid rgba(231,181,103,0.85);
+  pointer-events: none;
+  filter: drop-shadow(0 0 6px rgba(231,181,103,0.4));
+  z-index: 3;
+}
+.gl__corner--tl { top: -3px; left: -3px; border-right: none; border-bottom: none; }
+.gl__corner--tr { top: -3px; right: -3px; border-left: none; border-bottom: none; }
+.gl__corner--bl { bottom: -3px; left: -3px; border-right: none; border-top: none; }
+.gl__corner--br { bottom: -3px; right: -3px; border-left: none; border-top: none; }
+
+/* Frame side stamps */
+.gl__stamp {
+  position: absolute;
+  font-family: var(--mono, monospace);
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.gl__stamp::before {
+  content: "";
+  width: 5px; height: 5px;
+  background: rgba(231,181,103,0.9);
+  display: inline-block;
+}
+.gl__stamp--tl { top: -16px; left: 6px; }
+.gl__stamp--br { bottom: -16px; right: 6px; }
+
+/* Sub-tagline */
+.gl__sub {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  font-size: 11px;
+  letter-spacing: 0.42em;
+  color: rgba(255,255,255,0.78);
+  text-transform: uppercase;
+}
+.gl__bar {
+  width: 36px; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(231,181,103,0.7), transparent);
+}
+
+/* ---------- Progress ---------- */
+.gl__progress {
+  margin-top: 8px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.gl__progress-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  color: rgba(255,255,255,0.65);
+  text-transform: uppercase;
+}
+.gl__progress-meta-left {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.gl__progress-meta-left::before {
+  content: "";
+  width: 6px; height: 6px;
+  background: #E7B567;
+  display: inline-block;
+  box-shadow: 0 0 8px rgba(231,181,103,0.7);
+}
+.gl__pct {
+  color: #FFFFFF;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.16em;
+  font-size: 14px;
+  font-weight: 500;
+}
+.gl__pct sup {
+  color: rgba(231,181,103,0.85);
+  font-size: 10px;
+  margin-left: 4px;
+  letter-spacing: 0;
+  vertical-align: super;
+}
+.gl__track {
+  position: relative;
+  height: 10px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.18);
+  overflow: hidden;
+}
+.gl__track::before {
+  /* Subtle inner shadow */
+  content: "";
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.6);
+  pointer-events: none;
+}
+.gl__fill {
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  background: linear-gradient(90deg,
+    rgba(231,181,103,0.55) 0%,
+    rgba(231,181,103,0.95) 35%,
+    #FFFFFF 100%);
+  box-shadow:
+    0 0 10px rgba(231,181,103,0.7),
+    0 0 22px rgba(255,255,255,0.35);
+  transition: width 90ms linear;
+}
+.gl__fill::after {
+  /* leading edge highlight */
+  content: "";
+  position: absolute;
+  right: 0; top: 0; bottom: 0;
+  width: 2px;
+  background: #FFFFFF;
+  box-shadow: 0 0 12px #FFFFFF, 0 0 20px rgba(231,181,103,0.6);
+}
+.gl__ticks {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(40, 1fr);
+  pointer-events: none;
+}
+.gl__ticks span { border-right: 1px solid rgba(0,0,0,0.55); }
+.gl__ticks span:last-child { border-right: none; }
+.gl__ticks span:nth-child(10n) { border-right: 1px solid rgba(231,181,103,0.45); }
+
+.gl__status-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: rgba(255,255,255,0.55);
+  text-transform: uppercase;
+  text-align: left;
+  min-height: 1em;
+}
+.gl__status {
+  flex: 1;
+  text-align: left;
+}
+.gl__coords {
+  font-variant-numeric: tabular-nums;
+  color: rgba(231,181,103,0.75);
+  letter-spacing: 0.14em;
+}
+
+/* ---------- Bottom info row ---------- */
+.gl__info {
+  position: absolute;
+  left: 50%;
+  bottom: 70px;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 28px;
+  z-index: 4;
+  font-family: var(--mono, monospace);
+  font-size: 9.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+}
+.gl__info span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.gl__info span::before {
+  content: "";
+  width: 4px; height: 4px;
+  background: rgba(231,181,103,0.6);
+  display: inline-block;
+}
+
+@media (max-width: 720px) {
+  .gl__topbar, .gl__bottombar { padding: 14px 16px; font-size: 9.5px; letter-spacing: 0.16em; }
+  .gl__topbar .gl__tag--center { display: none; }
+  .gl__crane { right: -200px; opacity: 0.35; }
+  .gl__scaffold { left: -120px; opacity: 0.22; }
+  .gl__rail { display: none; }
+  .gl__shebeke { opacity: 0.12; }
+  .gl__info { font-size: 8.5px; gap: 14px; bottom: 56px; }
+}
