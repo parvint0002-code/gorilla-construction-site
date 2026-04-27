@@ -12,9 +12,9 @@ const GorillaLoader = ({ minDuration = 2800 }) => {
 
   // Resolve language from localStorage so the loader speaks the user's chosen tongue.
   const lang = React.useMemo(() => {
-    try { return localStorage.getItem("gorilla_lang") || "EN"; } catch (e) { return "EN"; }
+    try { return localStorage.getItem("gorilla_lang") || "AZ"; } catch (e) { return "AZ"; }
   }, []);
-  const t = (window.I18N && (window.I18N[lang] || window.I18N.EN)) || {};
+  const t = (window.I18N && (window.I18N[lang] || window.I18N.AZ)) || {};
 
   React.useEffect(() => {
     const start = performance.now();

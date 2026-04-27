@@ -27,7 +27,7 @@ const DISPLAY_FONTS = {
 const App = () => {
   const [tweaks, setTweak] = (useTweaks ? useTweaks(TWEAK_DEFAULTS) : [TWEAK_DEFAULTS, () => {}]);
   const [lang, setLang] = React.useState(() => {
-    try { return localStorage.getItem("gorilla_lang") || "EN"; } catch (e) { return "EN"; }
+    try { return localStorage.getItem("gorilla_lang") || "AZ"; } catch (e) { return "AZ"; }
   });
   const [menuOpen, setMenuOpen] = React.useState(false);
 
@@ -37,7 +37,7 @@ const App = () => {
   }, [lang]);
 
   const i18nValue = React.useMemo(
-    () => ({ lang, t: window.I18N[lang] || window.I18N.EN }),
+    () => ({ lang, t: window.I18N[lang] || window.I18N.AZ }),
     [lang]
   );
 
@@ -59,7 +59,7 @@ const App = () => {
     <window.LangContext.Provider value={i18nValue}>
       {window.GorillaLoader && <window.GorillaLoader minDuration={2800} />}
       <window.Nav lang={lang} setLang={setLang} onMobileOpen={() => setMenuOpen(true)} />
-      <window.MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
+      <window.MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} lang={lang} setLang={setLang} />
       <main>
         <window.Hero />
         <window.Stats />

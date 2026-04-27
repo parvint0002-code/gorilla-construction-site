@@ -568,11 +568,23 @@ const Footer = () => {
 };
 
 /* -------------------- MOBILE MENU -------------------- */
-const MobileMenu = ({ open, onClose }) => {
+const MobileMenu = ({ open, onClose, lang, setLang }) => {
   const { t } = useT();
   return (
     <div className={`mobile-menu ${open ? "open" : ""}`}>
       <button className="close" onClick={onClose} aria-label="Close menu"><Icon name="close" size={18} /></button>
+      <div className="mobile-menu__lang" role="group" aria-label="Language">
+        {["AZ", "RU", "EN"].map(code => (
+          <button
+            key={code}
+            type="button"
+            className={lang === code ? "active" : ""}
+            onClick={() => setLang(code)}
+          >
+            {code}
+          </button>
+        ))}
+      </div>
       {window.NAV_LINK_KEYS.map(l => (
         <a key={l.href} href={l.href} onClick={onClose}>{t[l.labelKey]}</a>
       ))}
