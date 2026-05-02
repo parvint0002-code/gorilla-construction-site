@@ -4,6 +4,29 @@
 
 const { MediaPlaceholder, Icon, useT } = window;
 
+const HERO_MARQUEE_IMAGES = [
+  {
+    src: "assets/hero-marquee/facade-scaffolding.jpg",
+    alt: "Facade scaffolding around a multi-storey urban building",
+  },
+  {
+    src: "assets/hero-marquee/industrial-scaffolding.jpg",
+    alt: "Industrial scaffolding inside a heavy-duty plant",
+  },
+  {
+    src: "assets/hero-marquee/access-platforms.jpg",
+    alt: "Safe access platforms and stair towers on a commercial site",
+  },
+  {
+    src: "assets/hero-marquee/temporary-structures.jpg",
+    alt: "Temporary roof and protection structure on an active worksite",
+  },
+  {
+    src: "assets/hero-marquee/safety-inspection.jpg",
+    alt: "Supervisor inspecting tagged scaffolding with professional PPE",
+  },
+];
+
 /* -------------------- NAV -------------------- */
 const Nav = ({ lang, setLang, onMobileOpen }) => {
   const { t } = useT();
@@ -44,17 +67,23 @@ const Nav = ({ lang, setLang, onMobileOpen }) => {
 /* -------------------- HERO -------------------- */
 const Hero = () => {
   const { t } = useT();
+  const marqueeImages = [...HERO_MARQUEE_IMAGES, ...HERO_MARQUEE_IMAGES];
   return (
     <header className="hero" id="top" data-screen-label="01 Hero">
-      <div className="hero__media">
-        <MediaPlaceholder caption="Hero — site photo · tower crane at dusk over Baku" tone="deep" angle={28} />
-      </div>
+      <div className="hero__media" aria-hidden="true" />
       <div className="hero__meta">
         <div><span className="hero__meta-tick" />NİZAMİ BLV · BAKI</div>
         <div>40.3777° N · 49.8920° E</div>
         <div><strong>{t.hero_meta_site}</strong></div>
       </div>
       <div className="hero__inner container">
+        <div className="hero__entry-brand" aria-label="Gorilla">
+          <img src="assets/gorilla-logo.png" alt="" aria-hidden="true" />
+          <div>
+            <span>GORILLA</span>
+            <small>{t.brand_sub}</small>
+          </div>
+        </div>
         <div className="hero__eyebrow">
           <span className="bar"></span>
           {t.hero_eyebrow}
@@ -70,6 +99,18 @@ const Hero = () => {
             <span className="btn__arrow"><Icon name="arrow" size={14} /></span>
           </a>
           <a href="#projects" className="btn btn--ghost-light">{t.hero_cta_secondary}</a>
+        </div>
+        <div className="hero__photo-marquee" aria-label="Scaffolding project photos">
+          <div className="hero__photo-track">
+            {marqueeImages.map((img, i) => {
+              const duplicate = i >= HERO_MARQUEE_IMAGES.length;
+              return (
+                <figure className="hero__photo-card" key={`${img.src}-${i}`} aria-hidden={duplicate ? "true" : undefined}>
+                  <img src={img.src} alt={duplicate ? "" : img.alt} loading={duplicate ? "lazy" : "eager"} />
+                </figure>
+              );
+            })}
+          </div>
         </div>
       </div>
       <div className="hero__scroll">{t.hero_scroll}</div>
